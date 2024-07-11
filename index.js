@@ -22,10 +22,10 @@ app.get('/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const params = req.query;
-        const headers = req.headers;
-
-        //remove host
-        delete headers.host;
+        const headers = {
+            "Content-Type": req.headers["content-type"],
+            "Authorization": req.headers["authorization"]
+        }
 
         console.log({url, params, headers})
 
