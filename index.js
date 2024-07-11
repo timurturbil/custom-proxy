@@ -2,6 +2,7 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 const PORT = 8080;
 
@@ -11,6 +12,17 @@ const PORT = 8080;
 
 app.use(express.json());
 app.use(cors())
+
+// Middleware to handle CORS and proxy
+app.use('/proxy', createProxyMiddleware({
+    target: 'https://stageapi.trendyol.com',
+    changeOrigin: true,
+    pathRewrite: (path, req) => path.replace('/proxy', '/stagesapigw/suppliers/2738/orders'),
+    onProxyReq: (proxyReq, req, res) => {
+        // Optionally set headers or log requests here
+        proxyReq.setHeader('Origin', 'https://stageapi.trendyol.com');
+    }
+}));
 
 //Check if the server is running
 app.get('/', (req, res) => {
