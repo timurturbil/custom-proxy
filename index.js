@@ -5,6 +5,10 @@ const cors = require('cors');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 const PORT = 8080;
+const proxyMiddleware = createProxyMiddleware({
+  target: 'https://stageapi.trendyol.com/stagesapigw', // target host with the same base path
+  changeOrigin: true, // needed for virtual hosted sites
+});
 
 //const agent = new https.Agent({
 //  rejectUnauthorized: false
@@ -14,23 +18,15 @@ app.use(express.json());
 app.use(cors())
 
 // Middleware to handle CORS and proxy
-app.use('/proxy', createProxyMiddleware({
-    target: 'https://stageapi.trendyol.com',
-    changeOrigin: true,
-    pathRewrite: (path, req) => path.replace('/proxy', '/stagesapigw/suppliers/2738/orders'),
-    onProxyReq: (proxyReq, req, res) => {
-        // Optionally set headers or log requests here
-        proxyReq.setHeader('Origin', 'https://stageapi.trendyol.com');
-    }
-}));
+app.use('/api', proxyMiddleware);
 
 //Check if the server is running
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.status(200).send('Trendyol Proxy server is running');
 });
 
 //GET
-app.get('/:url(*)', async (req, res) => {
+app.get('/api/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const params = req.query;
@@ -49,7 +45,7 @@ app.get('/:url(*)', async (req, res) => {
 });
 
 //POST
-app.post('/:url(*)', async (req, res) => {
+app.post('/api/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const body = req.body;
@@ -67,7 +63,7 @@ app.post('/:url(*)', async (req, res) => {
 });
 
 //PUT
-app.put('/:url(*)', async (req, res) => {
+app.put('/api/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const body = req.body;
@@ -85,7 +81,7 @@ app.put('/:url(*)', async (req, res) => {
 });
 
 //PATCH
-app.patch('/:url(*)', async (req, res) => {
+app.patch('/api/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const body = req.body;
@@ -103,7 +99,7 @@ app.patch('/:url(*)', async (req, res) => {
 });
 
 //DELETE
-app.delete('/:url(*)', async (req, res) => {
+app.delete('/api/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const headers = req.headers;
