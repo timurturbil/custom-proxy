@@ -1,13 +1,13 @@
-const https = require('https');
+//const https = require('https');
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const app = express();
 const PORT = 8080;
 
-const agent = new https.Agent({
-  rejectUnauthorized: false
-});
+//const agent = new https.Agent({
+//  rejectUnauthorized: false
+//});
 
 app.use(express.json());
 app.use(cors())
@@ -29,7 +29,7 @@ app.get('/:url(*)', async (req, res) => {
 
         console.log({url, params, headers})
 
-        const response = await axios.get(url, {params: params, headers: headers, httpsAgent: agent, maxBodyLength: Infinity, maxContentLength: Infinity});
+        const response = await axios.get(url, {params: params, headers: headers});
         res.status(200).send(response.data);
     } catch (error) {
         res.status(400).send(error);
@@ -47,7 +47,7 @@ app.post('/:url(*)', async (req, res) => {
         delete headers.host;
         delete headers['content-length'];
 
-        const response = await axios.post(url, body, {headers: headers, httpsAgent: agent});
+        const response = await axios.post(url, body, {headers: headers});
         res.status(200).send(response.data);
     } catch (error) {
         res.status(400).send(error);
@@ -65,7 +65,7 @@ app.put('/:url(*)', async (req, res) => {
         delete headers.host;
         delete headers['content-length'];
 
-        const response = await axios.put(url, body, {headers: headers, httpsAgent: agent});
+        const response = await axios.put(url, body, {headers: headers});
         res.status(200).send(response.data);
     } catch (error) {
         res.status(400).send(error);
@@ -83,7 +83,7 @@ app.patch('/:url(*)', async (req, res) => {
         delete headers.host;
         delete headers['content-length'];
 
-        const response = await axios.patch(url, body, {headers: headers, httpsAgent: agent});
+        const response = await axios.patch(url, body, {headers: headers});
         res.status(200).send(response.data);
     } catch (error) {
         res.status(400).send(error);
@@ -100,7 +100,7 @@ app.delete('/:url(*)', async (req, res) => {
         delete headers.host;
         delete headers['content-length'];
 
-        const response = await axios.delete(url, {headers: headers, httpsAgent: agent});
+        const response = await axios.delete(url, {headers: headers});
         res.status(200).send(response.data);
     } catch (error) {
         res.status(400).send(error);
