@@ -1,41 +1,27 @@
-//const https = require('https');
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 const PORT = 8080;
-const proxyMiddleware = createProxyMiddleware({
-  target: 'https://stageapi.trendyol.com/stagesapigw', // target host with the same base path
-  changeOrigin: true, // needed for virtual hosted sites
-});
-
-//const agent = new https.Agent({
-//  rejectUnauthorized: false
-//});
 
 app.use(express.json());
 app.use(cors())
 
-// Middleware to handle CORS and proxy
-app.use('/api', proxyMiddleware);
-
 //Check if the server is running
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
     res.status(200).send('Trendyol Proxy server is running');
 });
 
 //GET
-app.get('/api/:url(*)', async (req, res) => {
+app.get('/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const params = req.query;
         const headers = {
             "Content-Type": req.headers["content-type"],
-            "Authorization": req.headers["authorization"]
+            "Authorization": req.headers["authorization"],
+            "User-Agent": req.headers["user-agent"]
         }
-
-        console.log({url, params, headers})
 
         const response = await axios.get(url, {params: params, headers: headers});
         res.status(200).send(response.data);
@@ -45,15 +31,15 @@ app.get('/api/:url(*)', async (req, res) => {
 });
 
 //POST
-app.post('/api/:url(*)', async (req, res) => {
+app.post('/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const body = req.body;
-        const headers = req.headers;
-
-        //remove host and content-length
-        delete headers.host;
-        delete headers['content-length'];
+        const headers = {
+            "Content-Type": req.headers["content-type"],
+            "Authorization": req.headers["authorization"],
+            "User-Agent": req.headers["user-agent"]
+        }
 
         const response = await axios.post(url, body, {headers: headers});
         res.status(200).send(response.data);
@@ -63,15 +49,15 @@ app.post('/api/:url(*)', async (req, res) => {
 });
 
 //PUT
-app.put('/api/:url(*)', async (req, res) => {
+app.put('/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const body = req.body;
-        const headers = req.headers;
-
-        //remove host and content-length
-        delete headers.host;
-        delete headers['content-length'];
+        const headers = {
+            "Content-Type": req.headers["content-type"],
+            "Authorization": req.headers["authorization"],
+            "User-Agent": req.headers["user-agent"]
+        }
 
         const response = await axios.put(url, body, {headers: headers});
         res.status(200).send(response.data);
@@ -81,15 +67,15 @@ app.put('/api/:url(*)', async (req, res) => {
 });
 
 //PATCH
-app.patch('/api/:url(*)', async (req, res) => {
+app.patch('/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
         const body = req.body;
-        const headers = req.headers;
-
-        //remove host and content-length
-        delete headers.host;
-        delete headers['content-length'];
+        const headers = {
+            "Content-Type": req.headers["content-type"],
+            "Authorization": req.headers["authorization"],
+            "User-Agent": req.headers["user-agent"]
+        }
 
         const response = await axios.patch(url, body, {headers: headers});
         res.status(200).send(response.data);
@@ -99,14 +85,14 @@ app.patch('/api/:url(*)', async (req, res) => {
 });
 
 //DELETE
-app.delete('/api/:url(*)', async (req, res) => {
+app.delete('/:url(*)', async (req, res) => {
     try {
         const url = req.params.url;
-        const headers = req.headers;
-
-        //remove host and content-length
-        delete headers.host;
-        delete headers['content-length'];
+        const headers = {
+            "Content-Type": req.headers["content-type"],
+            "Authorization": req.headers["authorization"],
+            "User-Agent": req.headers["user-agent"]
+        }
 
         const response = await axios.delete(url, {headers: headers});
         res.status(200).send(response.data);
