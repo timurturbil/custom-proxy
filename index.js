@@ -1,6 +1,7 @@
 const https = require('https');
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 const app = express();
 const PORT = 8080;
 
@@ -9,6 +10,7 @@ const agent = new https.Agent({
 });
 
 app.use(express.json());
+app.use(cors())
 
 //Check if the server is running
 app.get('/', (req, res) => {
