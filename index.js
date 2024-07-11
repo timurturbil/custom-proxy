@@ -23,7 +23,7 @@ app.get('/:url(*)', async (req, res) => {
         const headers = req.headers;
 
         //remove host
-        delete headers.host;
+        //delete headers.host;
 
         const response = await axios.get(url, {params: params, headers: headers, httpsAgent: agent});
         res.status(200).send(response.data);
