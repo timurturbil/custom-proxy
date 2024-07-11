@@ -39,7 +39,7 @@ app.post('/:url(*)', async (req, res) => {
         const body = req.body;
         const headers = req.headers;
 
-        //remove host and user-agent
+        //remove host and content-length
         delete headers.host;
         delete headers['content-length'];
 
@@ -57,7 +57,7 @@ app.put('/:url(*)', async (req, res) => {
         const body = req.body;
         const headers = req.headers;
 
-        //remove host and user-agent
+        //remove host and content-length
         delete headers.host;
         delete headers['content-length'];
 
@@ -75,7 +75,7 @@ app.patch('/:url(*)', async (req, res) => {
         const body = req.body;
         const headers = req.headers;
 
-        //remove host and user-agent
+        //remove host and content-length
         delete headers.host;
         delete headers['content-length'];
 
@@ -92,7 +92,7 @@ app.delete('/:url(*)', async (req, res) => {
         const url = req.params.url;
         const headers = req.headers;
 
-        //remove host and user-agent
+        //remove host and content-length
         delete headers.host;
         delete headers['content-length'];
 
