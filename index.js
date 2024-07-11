@@ -29,7 +29,7 @@ app.get('/:url(*)', async (req, res) => {
 
         console.log({url, params, headers})
 
-        const response = await axios.get(url, {params: params, headers: headers, httpsAgent: agent});
+        const response = await axios.get(url, {params: params, headers: headers, httpsAgent: agent, maxBodyLength: Infinity, maxContentLength: Infinity});
         res.status(200).send(response.data);
     } catch (error) {
         res.status(400).send(error);
