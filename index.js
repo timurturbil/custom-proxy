@@ -9,7 +9,7 @@ app.use(cors())
 
 //Check if the server is running
 app.get('/', (req, res) => {
-    res.status(200).send('Trendyol Proxy server is running');
+    res.status(200).send('Custom Proxy server is running');
 });
 
 //GET
@@ -102,5 +102,5 @@ app.delete('/:url(*)', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Trendyol Proxy server running on port ${PORT}`);
+  console.log(`Custom Proxy server running on port ${PORT}`);
 });
